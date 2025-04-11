@@ -114,10 +114,10 @@ def main():
 def build_stage():
     brick_list = []
     building_stage = True
-    brick_width = config.WINDOW_WIDTH/(config.COLUMNS+3) # +3 for 1 bricklength on both sides & gaps
-    brick_height = config.WINDOW_HEIGHT/(config.ROWS*3) # *3 to have the 2nd half empty
-    brick_gap_h = brick_height/ (config.ROWS - 1) # -1 because 1 less gap then blocks
-    brick_gap_w = brick_width / (config.COLUMNS - 1) # Gaps total area = 1 brick
+    brick_width = config.WINDOW_WIDTH/(config.COLUMNS+2.25) # +2.25 for 1 bricklength on both sides & gaps
+    brick_height = config.WINDOW_HEIGHT/(config.ROWS*2.25) # *2.25 to have the 2nd half empty
+    brick_gap_h = (brick_height/ (config.ROWS - 1))/4 # -1 because 1 less gap then blocks
+    brick_gap_w = (brick_width/ (config.COLUMNS - 1))/4 # Gaps total area = 1/4 brick
     brick_spawn = [-brick_gap_w, brick_gap_h]
     
     while building_stage:

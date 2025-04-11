@@ -63,14 +63,14 @@ def main():
         if left_object.collidepoint(ball['coords']):
             ball['speed'][1] *= -1
             ball['speed'][0] *= -1
-            ball['speed'][0] -= random.randint(1, 2)
+            ball['speed'][0] -= random.random()*3
         if right_object.collidepoint(ball['coords']):
             ball['speed'][1] *= -1
             ball['speed'][0] *= -1
-            ball['speed'][0] += random.randint(1, 2)
+            ball['speed'][0] += random.random()*3
         # collitions : Brick
         del_brick = 0
-        for brick in bricks:
+        for brick in bricks: # Collider only detects if it hits and refects perfectly back, needs to detect which side it hit and reflect only X or Y
             brick_collider = pygame.Rect(brick['coords'][0], brick['coords'][1], brick['size'][0], brick['size'][1])
             if brick_collider.collidepoint(ball['coords']):
                 ball['speed'][1] *= -1

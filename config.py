@@ -8,7 +8,7 @@ WINDOW_WIDTH = 800
 WINDOW_HEIGHT = 600
 
 # Window Caption
-TITLE = 'My Pygame Project'
+TITLE = 'Brick Breaker'
 
 # Frame rate
 FPS = 60
@@ -26,3 +26,6 @@ YELLOW = (255, 255, 0)
 PURPLE = (255, 0, 255)
 CYAN = (0, 255, 255)
 
+# Brick Breaker
+ROWS = 3
+COLUMNS = 5

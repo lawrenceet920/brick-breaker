@@ -28,13 +28,13 @@ def main():
     running = True
     # On Startup
     ball = {
-        'coords' : [config.WINDOW_WIDTH/2, config.WINDOW_HEIGHT/2],
-        'speed' : [0, 5],
+        'coords' : [config.WINDOW_WIDTH/2, config.WINDOW_HEIGHT*6/7],
+        'speed' : [0, 0],
         'color' : config.BLACK,
         'size' : 5
     }
     paddle = {
-        'coords' : [config.WINDOW_WIDTH/2, config.WINDOW_HEIGHT*11/12],
+        'coords' : [(config.WINDOW_WIDTH/2)-(config.WINDOW_WIDTH/12), config.WINDOW_HEIGHT*11/12],
         'speed' : 0,
         'color' : config.GREY,
         'size' : [config.WINDOW_WIDTH/6, config.WINDOW_HEIGHT/50]
@@ -54,35 +54,29 @@ def main():
             ball['speed'][1] *= -1
         # Fall down
         if  ball['coords'][1] > config.WINDOW_HEIGHT:
-            ball['coords'] = [config.WINDOW_WIDTH/2, config.WINDOW_HEIGHT/2]
-            ball['speed'] = [0, 5]
+            ball['coords'] = [config.WINDOW_WIDTH/2, config.WINDOW_HEIGHT*6/7]
+            ball['speed'] = [0, 0]
         # Other collitions
         # collitions : Paddle
-        left_object = pygame.Rect(paddle['coords'][0], paddle['coords'][1], paddle['size'][0]/2, paddle['size'][1])
-        right_object = pygame.Rect(paddle['coords'][0] + paddle['size'][0]/2, paddle['coords'][1], paddle['size'][0]/2, paddle['size'][1])
-        if left_object.collidepoint(ball['coords']):
+        object_paddle = pygame.Rect(paddle['coords'][0], paddle['coords'][1], paddle['size'][0], paddle['size'][1])
+        if object_paddle.collidepoint(ball['coords']):
             ball['speed'][1] *= -1
-            ball['speed'][0] *= -1
-            ball['speed'][0] -= random.random()*3
-        if right_object.collidepoint(ball['coords']):
-            ball['speed'][1] *= -1
-            ball['speed'][0] *= -1
-            ball['speed'][0] += random.random()*3
+            ball['speed'][0] = -((paddle['coords'][0] + paddle['size'][0]/2) - ball['coords'][0])/(paddle['size'][0]/10)
         # collitions : Brick
         del_brick = 0
         for brick in bricks: # Check what edge it hits and reflect that direction (corners reflect fully!)
             brick_collider = pygame.Rect(brick['coords'][0], brick['coords'][1], brick['size'][0], brick['size'][1])
             if brick_collider.collidepoint(ball['coords']):
-                brick_collider = pygame.Rect(brick['coords'][0], brick['coords'][1], brick['size'][0], 5)
+                brick_collider = pygame.Rect(brick['coords'][0], brick['coords'][1], brick['size'][0], 9)
                 if brick_collider.collidepoint(ball['coords']): # Top
                     ball['speed'][1] *= -1
-                brick_collider = pygame.Rect(brick['coords'][0], brick['coords'][1]+brick['size'][1]-5, brick['size'][0], 5)
+                brick_collider = pygame.Rect(brick['coords'][0], brick['coords'][1]+brick['size'][1]-9, brick['size'][0], 9)
                 if brick_collider.collidepoint(ball['coords']): # Bottom
                     ball['speed'][1] *= -1
-                brick_collider = pygame.Rect(brick['coords'][0], brick['coords'][1], 5, brick['size'][1])
+                brick_collider = pygame.Rect(brick['coords'][0], brick['coords'][1], 9, brick['size'][1])
                 if brick_collider.collidepoint(ball['coords']): # Left
                     ball['speed'][0] *= -1
-                brick_collider = pygame.Rect(brick['coords'][0]+brick['size'][0]-5, brick['coords'][1], 5, brick['size'][1])
+                brick_collider = pygame.Rect(brick['coords'][0]+brick['size'][0]-9, brick['coords'][1],9, brick['size'][1])
                 if brick_collider.collidepoint(ball['coords']): # Right
                     ball['speed'][0] *= -1
                 del_brick = brick # Delete brick
@@ -95,6 +89,9 @@ def main():
             paddle['speed'] -= 0.75
         elif keys[pygame.K_d]:
             paddle['speed'] += 0.75
+        if keys[pygame.K_SPACE] and ball['speed'][1] == 0:
+            ball['speed'][1] = 5
+
         # Momentum
         if paddle['speed'] > 0:
             paddle['speed'] -= .5

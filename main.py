@@ -70,12 +70,22 @@ def main():
             ball['speed'][0] += random.random()*3
         # collitions : Brick
         del_brick = 0
-        for brick in bricks: # Collider only detects if it hits and refects perfectly back, needs to detect which side it hit and reflect only X or Y
+        for brick in bricks: # Check what edge it hits and reflect that direction (corners reflect fully!)
             brick_collider = pygame.Rect(brick['coords'][0], brick['coords'][1], brick['size'][0], brick['size'][1])
             if brick_collider.collidepoint(ball['coords']):
-                ball['speed'][1] *= -1
-                ball['speed'][0] *= -1
-                del_brick = brick
+                brick_collider = pygame.Rect(brick['coords'][0], brick['coords'][1], brick['size'][0], 5)
+                if brick_collider.collidepoint(ball['coords']): # Top
+                    ball['speed'][1] *= -1
+                brick_collider = pygame.Rect(brick['coords'][0], brick['coords'][1]+brick['size'][1]-5, brick['size'][0], 5)
+                if brick_collider.collidepoint(ball['coords']): # Bottom
+                    ball['speed'][1] *= -1
+                brick_collider = pygame.Rect(brick['coords'][0], brick['coords'][1], 5, brick['size'][1])
+                if brick_collider.collidepoint(ball['coords']): # Left
+                    ball['speed'][0] *= -1
+                brick_collider = pygame.Rect(brick['coords'][0]+brick['size'][0]-5, brick['coords'][1], 5, brick['size'][1])
+                if brick_collider.collidepoint(ball['coords']): # Right
+                    ball['speed'][0] *= -1
+                del_brick = brick # Delete brick
         if del_brick != 0:
             bricks.remove(del_brick)
         # - - - Player - - - #

@@ -40,7 +40,7 @@ def main():
         'size' : [config.WINDOW_WIDTH/6, config.WINDOW_HEIGHT/50]
     }
     bricks = build_stage()
-
+    lives = 3
     while running:
         running = handle_events()
         screen.fill(config.WHITE)
@@ -56,6 +56,10 @@ def main():
         if  ball['coords'][1] > config.WINDOW_HEIGHT:
             ball['coords'] = [config.WINDOW_WIDTH/2, config.WINDOW_HEIGHT*6/7]
             ball['speed'] = [0, 0]
+            lives -= 1
+            if lives == 0:
+                pygame.quit()
+                sys.exit()
         # Other collitions
         # collitions : Paddle
         object_paddle = pygame.Rect(paddle['coords'][0], paddle['coords'][1], paddle['size'][0], paddle['size'][1])
@@ -82,6 +86,9 @@ def main():
                 del_brick = brick # Delete brick
         if del_brick != 0:
             bricks.remove(del_brick)
+            if not bricks:
+                pygame.quit()
+                sys.exit()
         # - - - Player - - - #
         # Keys
         keys = pygame.key.get_pressed()

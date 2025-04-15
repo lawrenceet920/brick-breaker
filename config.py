@@ -27,5 +27,5 @@ PURPLE = (255, 0, 255)
 CYAN = (0, 255, 255)
 
 # Brick Breaker
-ROWS = 5
-COLUMNS = 5
+ROWS = 2
+COLUMNS = 2

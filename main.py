@@ -30,20 +30,20 @@ def main():
     ball = {
         'coords' : [config.WINDOW_WIDTH/2, config.WINDOW_HEIGHT*6/7],
         'speed' : [0, 0],
-        'color' : config.BLACK,
+        'color' : config.YELLOW,
         'size' : 5
     }
     paddle = {
         'coords' : [(config.WINDOW_WIDTH/2)-(config.WINDOW_WIDTH/12), config.WINDOW_HEIGHT*11/12],
         'speed' : 0,
-        'color' : config.GREY,
+        'color' : [255, 255, 255],
         'size' : [config.WINDOW_WIDTH/6, config.WINDOW_HEIGHT/50]
     }
     bricks = build_stage()
     lives = 3
     while running:
         running = handle_events()
-        screen.fill(config.WHITE)
+        screen.fill((185, 185, 255))
         # While Running
         # - - - Ball - - - #
         ball['coords'][0] += ball['speed'][0]
@@ -57,9 +57,7 @@ def main():
             ball['coords'] = [config.WINDOW_WIDTH/2, config.WINDOW_HEIGHT*6/7]
             ball['speed'] = [0, 0]
             lives -= 1
-            if lives == 0:
-                pygame.quit()
-                sys.exit()
+            paddle['color'] = life_check(lives)
         # Other collitions
         # collitions : Paddle
         object_paddle = pygame.Rect(paddle['coords'][0], paddle['coords'][1], paddle['size'][0], paddle['size'][1])
@@ -89,6 +87,7 @@ def main():
             if not bricks:
                 print('Nice!')
                 lives += 1
+                paddle['color'] = life_check(lives)
                 ball['coords'] = [config.WINDOW_WIDTH/2, config.WINDOW_HEIGHT*6/7]
                 ball['speed'] = [0, 0]
                 bricks = build_stage()
@@ -151,7 +150,16 @@ def build_stage():
         'size' : [brick_width, brick_height]
         }))
     return brick_list
-    
+def life_check(lives):
+    if lives == 0:
+        pygame.quit()
+        sys.exit()
+    elif lives == 1:
+        return[50, 50, 50]
+    elif lives == 2:
+        return[150, 150, 150]
+    elif lives == 3:
+        return[255, 255, 255]
 # Startup
 if __name__ == '__main__':
     main()

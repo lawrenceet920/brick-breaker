@@ -87,8 +87,11 @@ def main():
         if del_brick != 0:
             bricks.remove(del_brick)
             if not bricks:
-                pygame.quit()
-                sys.exit()
+                print('Nice!')
+                lives += 1
+                ball['coords'] = [config.WINDOW_WIDTH/2, config.WINDOW_HEIGHT*6/7]
+                ball['speed'] = [0, 0]
+                bricks = build_stage()
         # - - - Player - - - #
         # Keys
         keys = pygame.key.get_pressed()
@@ -144,7 +147,7 @@ def build_stage():
             continue
         brick_list.append(copy.deepcopy({
         'coords' : brick_spawn,
-        'color' : (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)),
+        'color' : (random.randint(200, 255), random.randint(0, 100), random.randint(0, 50)),
         'size' : [brick_width, brick_height]
         }))
     return brick_list

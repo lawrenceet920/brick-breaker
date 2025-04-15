@@ -46,13 +46,15 @@ def main():
     while running:
         running = handle_events()
         screen.fill((185, 185, 255))
-        game_over = life_check(lives, screen)
+        # Game Over Tracker
+        game_over = life_check(lives)
         if game_over == 'game over':
             screen.blit(game_over_message, (config.WINDOW_WIDTH/2 - game_over_message.get_width()//2, config.WINDOW_HEIGHT/2 - game_over_message.get_height()//2))
             score_message = pygame.font.SysFont("PixelifySans-Regular", 30).render(str(score), True, config.WHITE)
             screen.blit(score_message, (config.WINDOW_WIDTH/2 - score_message.get_width()//2, config.WINDOW_HEIGHT/2 + (game_over_message.get_height()*2) - score_message.get_height()//2))
         else:
             paddle['color'] = game_over
+
             # While Running
             # - - - Ball - - - #
             ball['coords'][0] += ball['speed'][0]
@@ -67,6 +69,7 @@ def main():
                 ball['speed'] = [0, 0]
                 lives -= 1
             # Other collitions
+                
             # collitions : Paddle
             object_paddle = pygame.Rect(paddle['coords'][0], paddle['coords'][1], paddle['size'][0], paddle['size'][1])
             if object_paddle.collidepoint(ball['coords']):
@@ -99,7 +102,9 @@ def main():
                     ball['coords'] = [config.WINDOW_WIDTH/2, config.WINDOW_HEIGHT*6/7]
                     ball['speed'] = [0, 0]
                     bricks = build_stage()
+
             # - - - Player - - - #
+                    
             # Keys
             keys = pygame.key.get_pressed()
             if keys[pygame.K_a]:
@@ -153,15 +158,16 @@ def build_stage():
         if brick_spawn[1] >= (brick_height*config.ROWS)+(brick_gap_h*(config.ROWS-1)):
             building_stage = False
             continue
-        brick_list.append(copy.deepcopy({
+        brick_list.append(copy.deepcopy({ # Deep copy clones the variable so the dict holding the location information of the bricks dont change
         'coords' : brick_spawn,
         'color' : (random.randint(200, 255), random.randint(0, 100), random.randint(0, 50)),
         'size' : [brick_width, brick_height]
         }))
     return brick_list
-def life_check(lives, screen):
+
+def life_check(lives):
     if lives == 0:
-        return 'game over'
+        return 'game over' # this is checked to ensure color isnt set to a string
     elif lives == 1:
         return[50, 50, 50]
     elif lives == 2:
